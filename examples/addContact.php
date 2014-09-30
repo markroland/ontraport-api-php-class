@@ -12,13 +12,15 @@ $Ontraport = new \markroland\Ontraport(ONTRAPORT_APPID, ONTRAPORT_KEY);
 // Add contact
 $response = $Ontraport->addContact(
 	array(
-		'First Name' => 'John',
-		'Last Name' => 'Smith',
-		'Email' => 'johnsmith@example.com'
-	),
-	array(
-		'Contact Tags' => 'test',
-		'Sequences' => '*/*3*/*8*/*'
+		'Contact Information' => array(
+			'First Name' => 'John',
+			'Last Name' => 'Smith',
+			'Email' => 'johnsmith@example.com'
+		),
+		'Sequences and Tags' => array(
+			'Contact Tags' => 'test',
+			'Sequences' => '*/*3*/*8*/*'
+		)
 	)
 );
 

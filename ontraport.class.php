@@ -14,7 +14,7 @@ namespace markroland\Ontraport;
  * @copyright 2014 Mark Roland
  * @license http://opensource.org/licenses/MIT
  * @link http://github.com/markroland/ontraport-api-php-class
- * @version 0.1.0
+ * @version 0.1.1
  *
  **/
 class Ontraport
@@ -123,26 +123,22 @@ class Ontraport
 
     /**
      * Add a Contact
-     * @var array $contact An associative array of contact information. Key-value pairs will be
-     * used as XML key-values
-     * @var array $sequences_and_tags An associative array of sequence and/or tag information.
+     * @var array $sections A multidimensional associative array of contact information.
      * Key-value pairs will be used as XML key-values
+     * @return Returns a sendRequest response
      */
-    public function addContact($contact, $sequences_and_tags)
+    public function addContact(array $sections = array())
     {
 
         // Build XML
         $data  = '<contact>'."\n";
-        $data .= "\t".'<Group_Tag name="Contact Information">'."\n";
-        foreach ($contact as $key => $val) {
-            $data .= "\t\t".'<field name="'.$key.'">'.$val.'</field>'."\n";
+        foreach ($sections as $group_tag_name => $section) {
+            $data .= "\t".'<Group_Tag name="'.$group_tag_name.'">'."\n";
+            foreach ($section as $key => $val) {
+                $data .= "\t\t".'<field name="'.$key.'">'.$val.'</field>'."\n";
+            }
+            $data .= "\t".'</Group_Tag>'."\n";
         }
-        $data .= "\t".'</Group_Tag>'."\n";
-        $data .= "\t".'<Group_Tag name="Sequences and Tags">'."\n";
-        foreach ($sequences_and_tags as $key => $val) {
-            $data .= "\t\t".'<field name="'.$key.'">'.$val.'</field>'."\n";
-        }
-        $data .= "\t".'</Group_Tag>'."\n";
         $data .= '</contact>'."\n";
 
         // Encoded data
