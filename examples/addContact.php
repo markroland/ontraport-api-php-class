@@ -7,7 +7,7 @@ include('ontraport.class.php');
 include('ontraport-credentials.php');
 
 // Create new Ontraport object
-$Ontraport = new \markroland\Ontraport(ONTRAPORT_APPID, ONTRAPORT_KEY);
+$Ontraport = new \markroland\Ontraport\Ontraport(ONTRAPORT_APPID, ONTRAPORT_KEY);
 
 // Add contact
 $response = $Ontraport->addContact(
