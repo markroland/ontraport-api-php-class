@@ -185,7 +185,7 @@ class Ontraport
      * Key-value pairs will be used as XML key-values
      * @return Returns a sendRequest response
      */
-    public function searchContacts(array $equations)
+    public function searchContacts(array $equations, $page = null)
     {
 
         // Build XML
@@ -236,12 +236,39 @@ class Ontraport
     }
 
     /**
+     * Log Transactions
+     * @var int $contactId An id of the contact
+     * @var array $products A multidimensional associative array of products that were purchased.
+     * @var int $date A date timestamp
+     * Key-value pairs will be used as XML key-values
+     * @return Returns a sendRequest response
+     */
+    public function logTransaction($contactId, array $products, $date = null)
+    {
+
+        if (is_null($date)) { $date = time(); }
+        if (!is_array($products)) { return false; }
+
+        // Build XML
+        $data = array();
+        $data['contact_id'] = $contactId;
+        $data['date'] = $date;
+        $data['products'] = $products;
+
+        // Encoded data
+        $data = json_encode($data);
+
+        // Send Request
+        return $this->sendRequest('products_log_transaction', 'POST', $data);
+    }
+
+    /**
      * Search Products
      * @var array $sections A multidimensional associative array of search equations.
      * Key-value pairs will be used as XML key-values
      * @return Returns a sendRequest response
      */
-    public function searchProducts(array $equations)
+    public function searchProducts(array $equations, $page = null)
     {
 
         // Build XML
@@ -270,7 +297,7 @@ class Ontraport
      * Key-value pairs will be used as XML key-values
      * @return Returns a sendRequest response
      */
-    public function searchPurchases(array $equations)
+    public function searchPurchases(array $equations, $page = null)
     {
 
         // Build XML
