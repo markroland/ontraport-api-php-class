@@ -65,13 +65,30 @@ class Ontraport
     private function sendRequest($api_method, $http_method = 'GET', $data = null)
     {
 
+        $apiMethod = explode('_', strtolower($api_method), 2);
+        if (isset($apiMethod[1])) {
+            $api_method = $apiMethod[1];
+        }
+
         // Set the request type and construct the POST request
         $postdata = "appid=".$this->ontraport_appid."&key=".$this->ontraport_key."&return_id=1";
         $postdata .= '&reqType='.$api_method;
         $postdata .= '&data='.$data;
 
         // Set request
-        $request_url = 'https://api.ontraport.com/cdata.php';
+        switch ($apiMethod[0]) {
+            case 'forms':
+                $request_url = 'https://api.ontraport.com/fdata.php';
+                break;
+
+            case 'products':
+                $request_url = 'https://api.ontraport.com/pdata.php';
+                break;
+
+            case 'contacts':
+            default:
+                $request_url = 'https://api.ontraport.com/cdata.php';
+        }
 
         // Debugging output
         $this->debug = array();
@@ -122,6 +139,19 @@ class Ontraport
     }
 
     /**
+     * Send a HTTP request to the API
+     *
+     * @param $response in raw XML
+     * @return object An XML-formatted response
+     **/
+    public function parseResponse($response)
+    {
+        $parsedResponse = new \SimpleXMLElement($response);
+
+        return $parsedResponse;
+    }
+
+    /**
      * Add a Contact
      * @var array $sections A multidimensional associative array of contact information.
      * Key-value pairs will be used as XML key-values
@@ -145,7 +175,121 @@ class Ontraport
         $data = urlencode(urlencode($data));
 
         // Send Request
-        return $this->sendRequest('add', 'POST', $data);
+        return $this->sendRequest('contacts_add', 'POST', $data);
 
+    }
+
+    /**
+     * Search Contact
+     * @var array $sections A multidimensional associative array of search equations.
+     * Key-value pairs will be used as XML key-values
+     * @return Returns a sendRequest response
+     */
+    public function searchContacts(array $equations)
+    {
+
+        // Build XML
+        $data  = '<search>'."\n";
+        foreach ($equations as $equation) {
+            if (isset($equation['field']) && isset($equation['op']) && isset($equation['value'])) {
+                $data .= "\t".'<equation>'."\n";
+                $data .= "\t\t".'<field>' . $equation['field'] . '</field>'."\n";
+                $data .= "\t\t".'<op>' . $equation['op'] . '</op>'."\n";
+                $data .= "\t\t".'<value>' . $equation['value'] . '</value>'."\n";
+                $data .= "\t".'</equation>'."\n";
+            }
+        }
+        $data .= '</search>'."\n";
+
+        // Encoded data
+        $data = urlencode(urlencode($data));
+
+        // Send Request
+        return $this->sendRequest('contacts_search', 'POST', $data);
+    }
+
+
+
+    /**
+     * Add a Product Sale
+     * @var int $contactId contact id (required)
+     * @var int $productId product id (required)
+     * @var array $sections A multidimensional associative array of optional fields.
+     * Key-value pairs will be used as XML key-values
+     * @return Returns a sendRequest response
+     */
+    public function saleProduct($contactId, $productId, array $optionalFields = array())
+    {
+
+        // Build XML
+        $data  = '<purchases contact_id="' . $contactId . '" product_id="' . $productId . '">'."\n";
+        foreach ($optionalFields as $fieldName => $fieldValue) {
+            $data .= "\t".'<field name="' . $fieldName . '">' . $fieldValue . '</field>'."\n";
+        }
+
+        // Encoded data
+        $data = urlencode(urlencode($data));
+
+        // Send Request
+        return $this->sendRequest('products_sale', 'POST', $data);
+
+    }
+
+    /**
+     * Search Products
+     * @var array $sections A multidimensional associative array of search equations.
+     * Key-value pairs will be used as XML key-values
+     * @return Returns a sendRequest response
+     */
+    public function searchProducts(array $equations)
+    {
+
+        // Build XML
+        $data  = '<search>'."\n";
+        foreach ($equations as $equation) {
+            if (isset($equation['field']) && isset($equation['op']) && isset($equation['value'])) {
+                $data .= "\t".'<equation>'."\n";
+                $data .= "\t\t".'<field>' . $equation['field'] . '</field>'."\n";
+                $data .= "\t\t".'<op>' . $equation['op'] . '</op>'."\n";
+                $data .= "\t\t".'<value>' . $equation['value'] . '</value>'."\n";
+                $data .= "\t".'</equation>'."\n";
+            }
+        }
+        $data .= '</search>'."\n";
+
+        // Encoded data
+        $data = urlencode(urlencode($data));
+
+        // Send Request
+        return $this->sendRequest('products_search', 'POST', $data);
+    }
+
+    /**
+     * Search Purchases
+     * @var array $sections A multidimensional associative array of search equations.
+     * Key-value pairs will be used as XML key-values
+     * @return Returns a sendRequest response
+     */
+    public function searchPurchases(array $equations)
+    {
+
+        // Build XML
+        $data  = '<search>'."\n";
+        foreach ($equations as $equation) {
+            if (isset($equation['field']) && isset($equation['op']) && isset($equation['value'])) {
+                $data .= "\t".'<equation>'."\n";
+                $data .= "\t\t".'<field>' . $equation['field'] . '</field>'."\n";
+                $data .= "\t\t".'<op>' . $equation['op'] . '</op>'."\n";
+                $data .= "\t\t".'<value>' . $equation['value'] . '</value>'."\n";
+                $data .= "\t".'</equation>'."\n";
+            }
+        }
+        $data .= '</search>'."\n";
+
+        // Encoded data
+        $data = urlencode(urlencode($data));
+
+        // Send Request
+        return $this->sendRequest('products_search_purchase', 'POST', $data);
     }
 }
