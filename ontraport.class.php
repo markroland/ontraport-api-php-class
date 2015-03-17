@@ -146,7 +146,11 @@ class Ontraport
      **/
     public function parseResponse($response)
     {
-        $parsedResponse = new \SimpleXMLElement($response);
+        try {
+            $parsedResponse = new \SimpleXMLElement($response);    
+        } catch (Exception $ex) {
+            return false;
+        }
 
         return $parsedResponse;
     }
