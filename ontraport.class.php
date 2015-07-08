@@ -184,6 +184,35 @@ class Ontraport
     }
 
     /**
+     * Update a Contact
+     * @var string $id the id of the contact to update
+     * @var array $sections A multidimensional associative array of contact information.
+     * Key-value pairs will be used as XML key-values
+     * @return Returns a sendRequest response
+     */
+    public function updateContact($id, array $sections = array())
+    {
+
+        // Build XML
+        $data  = '<contact id="' . $id . '">'."\n";
+        foreach ($sections as $group_tag_name => $section) {
+            $data .= "\t".'<Group_Tag name="'.$group_tag_name.'">'."\n";
+            foreach ($section as $key => $val) {
+                $data .= "\t\t".'<field name="'.$key.'">'.$val.'</field>'."\n";
+            }
+            $data .= "\t".'</Group_Tag>'."\n";
+        }
+        $data .= '</contact>'."\n";
+
+        // Encoded data
+        $data = urlencode(urlencode($data));
+
+        // Send Request
+        return $this->sendRequest('contacts_update', 'POST', $data);
+
+    }
+
+    /**
      * Search Contact
      * @var array $sections A multidimensional associative array of search equations.
      * Key-value pairs will be used as XML key-values
