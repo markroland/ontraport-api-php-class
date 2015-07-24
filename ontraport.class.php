@@ -184,6 +184,53 @@ class Ontraport
     }
 
     /**
+     * Fetch a single Contact
+     * @var string $contactId a string with the contact_id being fetched
+     * @return Returns a sendRequest response
+     */
+    public function getContact($contactId)
+    {
+        if ($contactId) {
+            // Build XML
+            $data = '<contact_id>' . $contactId . '</contact_id>'."\n";
+
+            // Encoded data
+            $data = urlencode(urlencode($data));
+
+            // Send Request
+            return $this->sendRequest('contacts_fetch', 'POST', $data);
+        }
+
+        return false;
+
+    }
+
+    /**
+     * Fetch multiple Contact
+     * @var array $contact_id an array of contact_ids to fetch.
+     * @return Returns a sendRequest response
+     */
+    public function getContacts(array $contactIds = array())
+    {
+        if (!empty($contactIds)) {
+            // Build XML
+            $data = '';
+            foreach ($contactIds as $contactId) {
+                $data .= '<contact_id>' . $contactId . '</contact_id>'."\n";
+            }
+
+            // Encoded data
+            $data = urlencode(urlencode($data));
+
+            // Send Request
+            return $this->sendRequest('contacts_fetch', 'POST', $data);
+        }
+
+        return false;
+
+    }
+
+    /**
      * Update a Contact
      * @var string $id the id of the contact to update
      * @var array $sections A multidimensional associative array of contact information.
