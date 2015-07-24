@@ -169,7 +169,7 @@ class Ontraport
         foreach ($sections as $group_tag_name => $section) {
             $data .= "\t".'<Group_Tag name="'.$group_tag_name.'">'."\n";
             foreach ($section as $key => $val) {
-                $data .= "\t\t".'<field name="'.$key.'">'.$val.'</field>'."\n";
+                $data .= "\t\t".'<field name="'.$key.'">'.htmlspecialchars($val).'</field>'."\n";
             }
             $data .= "\t".'</Group_Tag>'."\n";
         }
@@ -245,7 +245,7 @@ class Ontraport
         foreach ($sections as $group_tag_name => $section) {
             $data .= "\t".'<Group_Tag name="'.$group_tag_name.'">'."\n";
             foreach ($section as $key => $val) {
-                $data .= "\t\t".'<field name="'.$key.'">'.$val.'</field>'."\n";
+                $data .= "\t\t".'<field name="'.$key.'">'.htmlspecialchars($val).'</field>'."\n";
             }
             $data .= "\t".'</Group_Tag>'."\n";
         }
@@ -358,7 +358,7 @@ class Ontraport
                 $data .= "\t".'<equation>'."\n";
                 $data .= "\t\t".'<field>' . $equation['field'] . '</field>'."\n";
                 $data .= "\t\t".'<op>' . $equation['op'] . '</op>'."\n";
-                $data .= "\t\t".'<value>' . $equation['value'] . '</value>'."\n";
+                $data .= "\t\t".'<value>' . htmlspecialchars($equation['value']) . '</value>'."\n";
                 $data .= "\t".'</equation>'."\n";
             }
         }
@@ -387,7 +387,7 @@ class Ontraport
                 $data .= "\t".'<equation>'."\n";
                 $data .= "\t\t".'<field>' . $equation['field'] . '</field>'."\n";
                 $data .= "\t\t".'<op>' . $equation['op'] . '</op>'."\n";
-                $data .= "\t\t".'<value>' . $equation['value'] . '</value>'."\n";
+                $data .= "\t\t".'<value>' . htmlspecialchars($equation['value']) . '</value>'."\n";
                 $data .= "\t".'</equation>'."\n";
             }
         }
