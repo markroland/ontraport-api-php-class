@@ -337,7 +337,7 @@ class Ontraport
 
         // Encoded data
         $data = json_encode($data);
-
+        
         // Send Request
         return $this->sendRequest('products_log_transaction', 'POST', $data);
     }
