@@ -1,5 +1,4 @@
-Ontraport API PHP class
-===================
+# Ontraport API PHP class
 
 A PHP class that acts as wrapper for the Ontraport API.
 
@@ -7,14 +6,12 @@ This is a work in progress that will be be developed on an as-needed basis.
 Feel free to fork this project to contribute.
 
 
-Working with the class
-----------------------
+## Working with the class
 
 [Ontraport API documentation](https://github.com/Ontraport/ontra_api_examples)
 
 
-Copyright and License
----------------------
+## Copyright and License
 
 The MIT License (MIT)
 

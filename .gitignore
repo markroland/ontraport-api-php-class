@@ -1,2 +1,5 @@
+# System Files
+.DS_Store
+
 ontraport-credentials.php
 /tests

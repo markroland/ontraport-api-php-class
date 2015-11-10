@@ -1,7 +1,7 @@
 <?php
 
 // Include Ontraport class
-include('ontraport.class.php');
+include('Ontraport.php');
 
 // Include credentials. Defines ONTRAPORT_APPID and ONTRAPORT_KEY
 include('ontraport-credentials.php');
