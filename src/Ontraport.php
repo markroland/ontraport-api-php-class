@@ -147,7 +147,7 @@ class Ontraport
     public function parseResponse($response)
     {
         try {
-            $parsedResponse = new \SimpleXMLElement($response);    
+            $parsedResponse = new \SimpleXMLElement($response);
         } catch (Exception $ex) {
             return false;
         }
@@ -326,8 +326,13 @@ class Ontraport
     public function logTransaction($contactId, array $products, $date = null)
     {
 
-        if (is_null($date)) { $date = time(); }
-        if (!is_array($products)) { return false; }
+        if (is_null($date)) {
+            $date = time();
+        }
+
+        if (!is_array($products)) {
+            return false;
+        }
 
         // Build XML
         $data = array();
@@ -337,7 +342,7 @@ class Ontraport
 
         // Encoded data
         $data = json_encode($data);
-        
+
         // Send Request
         return $this->sendRequest('products_log_transaction', 'POST', $data);
     }
