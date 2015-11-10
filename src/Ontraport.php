@@ -14,7 +14,7 @@ namespace markroland\Ontraport;
  * @copyright 2014 Mark Roland
  * @license http://opensource.org/licenses/MIT
  * @link http://github.com/markroland/ontraport-api-php-class
- * @version 0.1.1
+ * @version 0.2.0
  *
  **/
 class Ontraport
